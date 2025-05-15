@@ -1,13 +1,10 @@
 const express = require("express");
 const router = express.Router();
-//TODO: Refactor this
-const { Ingredient } = require("../models/ingredient.model");
 
-router.post("/", async (req, res) => {
-  // Crear un ingrediente en mi db
-  const createdIngredient = await Ingredient.create({name: "tomate"})
-  res.send(createdIngredient);
-});
+const { createIngredient } = require("../controllers/ingredient.controller");
+
+
+router.post("/", createIngredient);
 
 router.patch("/:id", (req, res) => {
   // Actualizar un ingrediente
