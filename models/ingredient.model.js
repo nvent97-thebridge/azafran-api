@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ingredientSchema = new Schema({
-  name: String,
-  userId: String,
-  quantity: Number,
+  name: {type: String, required: true},
+  userId: String, //TODO: userId required from auth
+  quantity: {type: Number, default: 1},
   unit: String,
   createdAt: { type: Date, default: Date.now },
 });
