@@ -3,7 +3,6 @@ const router = express.Router();
 
 const { createIngredient } = require("../controllers/ingredient.controller");
 
-
 router.post("/", createIngredient);
 
 router.patch("/:id", (req, res) => {
