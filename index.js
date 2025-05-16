@@ -3,7 +3,7 @@ const port = 8080;
 const cors = require("cors");
 const express = require("express");
 const { dbConnection } = require("./db");
-const { auth } = require("./middlewares/auth")
+const { auth } = require("./middlewares/auth");
 
 const recipesRoutes = require("./routes/recipes.routes");
 const ingredientsRoutes = require("./routes/ingredients.routes");
