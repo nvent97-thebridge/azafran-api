@@ -1,6 +1,8 @@
 const { Ingredient } = require("../models/ingredient.model");
 
 const createIngredient = async (req, res) => {
+  // #swagger.tags = ['Ingredients']
+  // #swagger.summary = 'Para crear ingredientes'
   // Crea un ingrediente en mi db
   try {
     const createdIngredient = new Ingredient({...req.body, userId: req.user._id});

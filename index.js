@@ -2,6 +2,9 @@ const port = 8080;
 
 const cors = require("cors");
 const express = require("express");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
+
 const { dbConnection } = require("./db");
 const { auth } = require("./middlewares/auth");
 
@@ -17,6 +20,7 @@ const main = () => {
   app.use("/recipes", auth, recipesRoutes);
   app.use("/ingredients", auth, ingredientsRoutes);
   app.use("/", usersRoutes);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   dbConnection();
 
