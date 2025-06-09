@@ -7,21 +7,21 @@ const login = async (req, res) => {
   // Recibir username y password
   const { username, password } = req.body;
   if (!username || !password) {
-    res.status(404).send("Missing username or password");
+    res.status(404).send({msg: "Missing username or password"});
     return;
   }
   // Validar que el username exista
   const user = await User.findOne({ username: username });
   // {objeto usuario} si existe, null si no existe
   if (!user) {
-    res.status(404).send("INVALID_CREDENTIALS");
+    res.status(404).send({msg: "INVALID_CREDENTIALS"});
     return;
   }
   // Vaidar que el password de ese username sea el mismo
   // que el recibido
   const isPasswordMatch = bcryptjs.compareSync(password, user.password);
   if (!isPasswordMatch) {
-    res.status(404).send("INVALID_CREDENTIALS");
+    res.status(404).send({msg: "INVALID_CREDENTIALS"});
     return;
   }
   // USUARIO Y PASSWORD VALIDO
