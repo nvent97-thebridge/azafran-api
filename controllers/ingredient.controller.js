@@ -24,8 +24,8 @@ const getIngredients = async (req, res) => {
   const ingredients = await Ingredient.find({ userId: req.user.id });
   const parsedingredients = ingredients.map((ingredient) => {
     return {
+      id: ingredient.id,
       name: ingredient.name,
-      userId: ingredient.userId,
       quantity: ingredient.quantity,
       unit: ingredient.unit,
       createdAt: ingredient.createdAt,
