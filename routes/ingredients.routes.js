@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { createIngredient } = require("../controllers/ingredient.controller");
+const { createIngredient, getIngredients } = require("../controllers/ingredient.controller");
 
 router.post("/", createIngredient);
 
@@ -15,10 +15,6 @@ router.delete("/:id", (req, res) => {
   res.send("Delete ingredient");
 });
 
-router.get("/", (req, res) => {
-  // Obtener todas los ingredientes de un usuario
-  // [{}]
-  res.send("Get all ingredients");
-});
+router.get("/", getIngredients);
 
 module.exports = router;

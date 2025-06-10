@@ -5,7 +5,10 @@ const createIngredient = async (req, res) => {
   // #swagger.summary = 'Para crear ingredientes'
   // Crea un ingrediente en mi db
   try {
-    const createdIngredient = new Ingredient({...req.body, userId: req.user._id});
+    const createdIngredient = new Ingredient({
+      ...req.body,
+      userId: req.user._id,
+    });
     await createdIngredient.save();
     res.send(createdIngredient);
   } catch (error) {
@@ -15,4 +18,18 @@ const createIngredient = async (req, res) => {
   }
 };
 
-module.exports = { createIngredient };
+const getIngredients = async (req, res) => {
+  const ingredients = await Ingredient.find({ userId: req.user.id });
+  const parsedingredients = ingredients.map((ingredient) => {
+    return {
+      name: ingredient.name,
+      userId: ingredient.userId,
+      quantity: ingredient.quantity,
+      unit: ingredient.unit,
+      createdAt: ingredient.createdAt,
+    };
+  });
+  res.send(parsedingredients);
+};
+
+module.exports = { createIngredient, getIngredients };
