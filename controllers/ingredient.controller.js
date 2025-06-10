@@ -19,6 +19,8 @@ const createIngredient = async (req, res) => {
 };
 
 const getIngredients = async (req, res) => {
+  // req.user.id es el id del usuario que hizo la request
+  // obtengo los ingredientes del usuario que hizo la request
   const ingredients = await Ingredient.find({ userId: req.user.id });
   const parsedingredients = ingredients.map((ingredient) => {
     return {
