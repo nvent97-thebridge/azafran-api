@@ -1,4 +1,5 @@
 const { Ingredient } = require("../models/ingredient.model");
+const { sendMessage } = require("../services/openai");
 
 const getRecipes = async (req, res) => {
   // #swagger.tags = ['Recipes']
@@ -14,14 +15,7 @@ const getRecipes = async (req, res) => {
     // ingredients is an array of ids
     const ingredientDocs = await Ingredient.find({ _id: { $in: ingredients } });
     const ingredientNames = ingredientDocs.map((ing) => ing.name);
-    const generatedRecipes = [
-      {
-        id: "2",
-        title: "Paella",
-        description: "Arroz con cosas",
-        ingredients: JSON.stringify(ingredientNames),
-      },
-    ];
+    const generatedRecipes = await sendMessage(ingredientNames);
     res.send({ recipes: generatedRecipes });
   } catch (error) {
     // TODO: Improve error handling
