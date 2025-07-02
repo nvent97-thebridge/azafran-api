@@ -1,11 +1,7 @@
 const express = require("express");
+const { getRecipes } = require("../controllers/recipe.controller");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  // Encontrar una receta a partir de 
-  // los ingredientes guardados
-  // Nombre - Ingredientes - Procedimiento
-  res.send("Recipes by saved ingredients");
-});
+router.get("/", getRecipes);
 
 module.exports = router;

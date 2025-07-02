@@ -17,6 +17,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.3",
+    "openai": "^5.8.2",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
   }
