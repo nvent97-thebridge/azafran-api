@@ -33,11 +33,11 @@ const createRecipe = async (req, res) => {
       userId: req.user._id,
     });
     await createdRecipe.save();
-    res.send(createdRecipe);
+    res.status(201).send({ msg: "Recipe created" });
   } catch (error) {
     // TODO: Improve error handling
     console.log(error);
-    res.status(404).send({ error: error.name, message: error._message });
+    res.status(404).send({ msg: error.name, message: error._message });
   }
 };
 
