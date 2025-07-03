@@ -1,4 +1,6 @@
+const { Recipe } = require("../models/recipe.model");
 const { Ingredient } = require("../models/ingredient.model");
+
 const { sendMessage } = require("../services/openai");
 
 const getRecipes = async (req, res) => {
@@ -24,4 +26,21 @@ const getRecipes = async (req, res) => {
   }
 };
 
-module.exports = { getRecipes };
+const createRecipe = async (req, res) => {
+  // #swagger.tags = ['Recipes']
+  // #swagger.summary = 'To store a recipe into the database'
+  try {
+    const createdRecipe = new Recipe({
+      ...req.body,
+      userId: req.user._id,
+    });
+    await createdRecipe.save();
+    res.status(201).send({ msg: "Recipe created" });
+  } catch (error) {
+    // TODO: Improve error handling
+    console.log(error);
+    res.status(404).send({ msg: error.name, message: error._message });
+  }
+};
+
+module.exports = { getRecipes, createRecipe };
