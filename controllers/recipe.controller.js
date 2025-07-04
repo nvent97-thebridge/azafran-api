@@ -26,6 +26,18 @@ const getRecipes = async (req, res) => {
   }
 };
 
+const getUserRecipes = async (req, res) => {
+  // #swagger.tags = ['Recipes']
+  // #swagger.summary = 'To get user stored recipes'
+  try {
+      const userRecipes = await Recipe.find({ userId: req.user.id });
+      res.status(202).send(userRecipes);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send({ error: error.name, message: error._message });
+  }
+};
+
 const createRecipe = async (req, res) => {
   // #swagger.tags = ['Recipes']
   // #swagger.summary = 'To store a recipe into the database'
@@ -43,4 +55,4 @@ const createRecipe = async (req, res) => {
   }
 };
 
-module.exports = { getRecipes, createRecipe };
+module.exports = { getRecipes, getUserRecipes, createRecipe };
