@@ -1,8 +1,9 @@
 const express = require("express");
-const { getRecipes, createRecipes } = require("../controllers/recipe.controller");
+const { getRecipes, createRecipe } = require("../controllers/recipe.controller");
 const router = express.Router();
 
 router.get("/", getRecipes);
+router.post("/", createRecipe);
 
 router.post("/", createRecipes);
 
