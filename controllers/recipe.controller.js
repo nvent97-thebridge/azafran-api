@@ -1,6 +1,5 @@
 const { Recipe } = require("../models/recipe.model");
 const { Ingredient } = require("../models/ingredient.model");
-
 const { sendMessage } = require("../services/openai");
 
 const getRecipes = async (req, res) => {

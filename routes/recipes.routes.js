@@ -6,4 +6,6 @@ router.get("/user", getUserRecipes);
 router.get("/", getRecipes);
 router.post("/", createRecipe);
 
+router.post("/", createRecipes);
+
 module.exports = router;
