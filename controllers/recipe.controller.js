@@ -1,61 +1,60 @@
 const { Recipe } = require("../models/recipe.model");
 const { Ingredient } = require("../models/ingredient.model");
+
 const { sendMessage } = require("../services/openai");
 
 const getRecipes = async (req, res) => {
+    // #swagger.tags = ['Recipes']
+    // #swagger.summary = 'To get AI generated recipes'
     try {
         let { ingredients } = req.query;
         if (!ingredients) {
-            return res.status(400).send({ msg: "No ingredients passed" });
+            res.status(404).send({ msg: "No ingredients passed" });
         }
-        if (!Array.isArray(ingredients)) ingredients = [ingredients];
-
-        const docs = await Ingredient.find({ _id: { $in: ingredients } });
-        const names = docs.map((ing) => ing.name);
-        const generated = await sendMessage(names);
-        return res.json({ recipes: generated });
-    } catch (error) {
-        console.error(error);
-        return res
-            .status(500)
-            .send({ error: error.name, message: error.message });
-    }
-};
-
-const createRecipe = async (req, res) => {
-    try {
-        const created = new Recipe({
-            ...req.body,
-            userId: req.user._id,
+        if (!Array.isArray(ingredients)) {
+            ingredients = [ingredients];
+        }
+        // ingredients is an array of ids
+        const ingredientDocs = await Ingredient.find({
+            _id: { $in: ingredients },
         });
-        await created.save();
-        return res.status(201).json({ msg: "Recipe created" });
+        const ingredientNames = ingredientDocs.map((ing) => ing.name);
+        const generatedRecipes = await sendMessage(ingredientNames);
+        res.send({ recipes: generatedRecipes });
     } catch (error) {
-        console.error(error);
-        return res
-            .status(500)
-            .send({ msg: error.name, message: error.message });
+        // TODO: Improve error handling
+        console.log(error);
+        res.status(404).send({ error: error.name, message: error._message });
     }
 };
 
 const getUserRecipes = async (req, res) => {
+    // #swagger.tags = ['Recipes']
+    // #swagger.summary = 'To get user stored recipes'
     try {
-        const userId = req.user?._id;
-        if (!userId) {
-            return res.status(401).send({ msg: "Unauthorized" });
-        }
-        const userRecipes = await Recipe.find({ userId });
-        return res.json({ recipes: userRecipes });
+        const userRecipes = await Recipe.find({ userId: req.user.id });
+        res.status(202).send(userRecipes);
     } catch (error) {
-        console.error(error);
-        return res
-            .status(500)
-            .send({ error: error.name, message: error.message });
+        console.log(error);
+        res.status(404).send({ error: error.name, message: error._message });
     }
 };
 
-module.exports = {
-    getRecipes,
-    createRecipe,
-    getUserRecipes,
+const createRecipe = async (req, res) => {
+    // #swagger.tags = ['Recipes']
+    // #swagger.summary = 'To store a recipe into the database'
+    try {
+        const createdRecipe = new Recipe({
+            ...req.body,
+            userId: req.user._id,
+        });
+        await createdRecipe.save();
+        res.status(201).send({ msg: "Recipe created" });
+    } catch (error) {
+        // TODO: Improve error handling
+        console.log(error);
+        res.status(404).send({ msg: error.name, message: error._message });
+    }
 };
+
+module.exports = { getRecipes, getUserRecipes, createRecipe };

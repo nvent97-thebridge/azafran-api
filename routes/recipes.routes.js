@@ -1,16 +1,13 @@
 const express = require("express");
-const router = express.Router();
-
-const { auth: authenticate } = require("../middlewares/auth");
-
 const {
     getRecipes,
-    createRecipe,
     getUserRecipes,
+    createRecipe,
 } = require("../controllers/recipe.controller");
+const router = express.Router();
 
+router.get("/user", getUserRecipes);
 router.get("/", getRecipes);
-router.get("/user", authenticate, getUserRecipes);
-router.post("/", authenticate, createRecipe);
+router.post("/", createRecipe);
 
 module.exports = router;
